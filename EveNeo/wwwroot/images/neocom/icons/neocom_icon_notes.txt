@@ -1,0 +1,14 @@
+﻿icon
+	- color-overlay 85ffea 30%
+
+icon:hover
+	- color-overlay d1fff7 70%
+	- outer-glow
+		- blend-mode: Screen a3ffee
+		- opacity: 40%
+		- noise: 0%
+		- technique: Softer
+		- spread: 10%
+		- size: 5px
+		- range: 50%
+		- jitter: 0%
