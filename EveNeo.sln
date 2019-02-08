@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2036
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EveNeo", "EveNeo\EveNeo.csproj", "{6640528A-C7CC-4201-8A53-0922A08477D9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6640528A-C7CC-4201-8A53-0922A08477D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6640528A-C7CC-4201-8A53-0922A08477D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6640528A-C7CC-4201-8A53-0922A08477D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6640528A-C7CC-4201-8A53-0922A08477D9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {19EDEF99-A613-490B-B718-8E6067E58B44}
+	EndGlobalSection
+EndGlobal
