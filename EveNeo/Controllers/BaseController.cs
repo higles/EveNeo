@@ -39,7 +39,7 @@ namespace EveNeo.Controllers
                 // get all orders
                 do
                 {
-                    request = new HttpRequestMessage(HttpMethod.Get, "https://esi.evetech.net/latest/markets/" + tradeHub.RegionID + "/orders/?datasource=tranquility&order_type=sell&page=" + i + "&type_id=" + item.ID);
+                    request = new HttpRequestMessage(HttpMethod.Get, "https://esi.evetech.net/v1/markets/" + tradeHub.RegionID + "/orders/?datasource=tranquility&order_type=sell&page=" + i + "&type_id=" + item.ID);
                     response = await MakeEsiRequest(request);
 
                     if (response.IsSuccessStatusCode)

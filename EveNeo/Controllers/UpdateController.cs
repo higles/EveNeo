@@ -62,7 +62,7 @@ namespace EveNeo.Controllers
         private async Task<int> UpdateCategories(UpdateContext context)
         {
             List<int> ids = new List<int>();
-            var request = new HttpRequestMessage(HttpMethod.Get, "https://esi.evetech.net/latest/universe/categories/?datasource=tranquility");
+            var request = new HttpRequestMessage(HttpMethod.Get, "https://esi.evetech.net/v1/universe/categories/?datasource=tranquility");
             var response = await MakeEsiRequest(request);
 
             // get all category ids
@@ -91,7 +91,7 @@ namespace EveNeo.Controllers
             int i = 0;
             foreach (var id in ids)
             {
-                request = new HttpRequestMessage(HttpMethod.Get, "https://esi.evetech.net/latest/universe/categories/" + id + "/?datasource=tranquility&language=en-us");
+                request = new HttpRequestMessage(HttpMethod.Get, "https://esi.evetech.net/v1/universe/categories/" + id + "/?datasource=tranquility&language=en-us");
                 response = await MakeEsiRequest(request);
 
                 if (response.IsSuccessStatusCode)
@@ -140,7 +140,7 @@ namespace EveNeo.Controllers
             // get all group ids
             do
             {
-                request = new HttpRequestMessage(HttpMethod.Get, "https://esi.evetech.net/latest/universe/groups/?datasource=tranquility&page=" + i);
+                request = new HttpRequestMessage(HttpMethod.Get, "https://esi.evetech.net/v1/universe/groups/?datasource=tranquility&page=" + i);
                 response = await MakeEsiRequest(request);
 
                 if (response.IsSuccessStatusCode)
@@ -172,7 +172,7 @@ namespace EveNeo.Controllers
             i = 0;
             foreach (var id in ids)
             {
-                request = new HttpRequestMessage(HttpMethod.Get, "https://esi.evetech.net/latest/universe/groups/" + id + "/?datasource=tranquility&language=en-us");
+                request = new HttpRequestMessage(HttpMethod.Get, "https://esi.evetech.net/v1/universe/groups/" + id + "/?datasource=tranquility&language=en-us");
                 response = await MakeEsiRequest(request);
 
                 if (response.IsSuccessStatusCode)
@@ -222,7 +222,7 @@ namespace EveNeo.Controllers
             // get all item ids
             do
             {
-                request = new HttpRequestMessage(HttpMethod.Get, "https://esi.evetech.net/latest/universe/types/?datasource=tranquility&page=" + i);
+                request = new HttpRequestMessage(HttpMethod.Get, "https://esi.evetech.net/v1/universe/types/?datasource=tranquility&page=" + i);
                 response = await MakeEsiRequest(request);
 
                 if (response.IsSuccessStatusCode)
@@ -254,7 +254,7 @@ namespace EveNeo.Controllers
             i = 0;
             foreach (var id in ids)
             {
-                request = new HttpRequestMessage(HttpMethod.Get, "https://esi.evetech.net/latest/universe/types/" + id + "/?datasource=tranquility&language=en-us");
+                request = new HttpRequestMessage(HttpMethod.Get, "https://esi.evetech.net/v3/universe/types/" + id + "/?datasource=tranquility&language=en-us");
                 response = await MakeEsiRequest(request);
 
                 if (response.IsSuccessStatusCode)
