@@ -28,20 +28,26 @@ namespace EveNeo.Controllers
         public async Task<List<ItemVM>> GetItemMarketData(List<Item> items, TradeHub tradeHub)
         {
             List<ItemVM> viewModels = new List<ItemVM>();
-            var request = new HttpRequestMessage();
-            var response = new HttpResponseMessage();
+            //var request = new HttpRequestMessage();
+            //var response = new HttpResponseMessage();
 
-            foreach (var item in items)
+            int i = 1;
+            List<Order> orders = new List<Order>();
+            List<Order> responseOrders = new List<Order>();
+            // get all orders
+            do
             {
-                int i = 1;
-                List<Order> orders = new List<Order>();
-                List<Order> responseOrders = new List<Order>();
-                // get all orders
-                do
+                List<string> urls = new List<string>();
+                foreach (var item in items)
                 {
-                    request = new HttpRequestMessage(HttpMethod.Get, "https://esi.evetech.net/v1/markets/" + tradeHub.RegionID + "/orders/?datasource=tranquility&order_type=sell&page=" + i + "&type_id=" + item.ID);
-                    response = await MakeEsiRequest(request);
+                    urls.Add("https://esi.evetech.net/v1/markets/" + tradeHub.RegionID + "/orders/?datasource=tranquility&order_type=sell&page=" + i + "&type_id=" + item.ID);
+                }
 
+                var responses = await MakeEsiRequest(urls);
+                //response = await MakeEsiRequest(request);
+
+                foreach (var response in responses)
+                {
                     if (response.IsSuccessStatusCode)
                     {
                         responseOrders = await response.Content.ReadAsAsync<List<Order>>();
@@ -49,19 +55,43 @@ namespace EveNeo.Controllers
                     }
                     else
                     {
-                        throw new Exception($"Failed to get '{item.Name}' Orders for page '{i}'");
+                        throw new Exception($"Failed to get all Orders for page '{i}'");
                     }
+                }                
 
-                    i++;
-                } while (responseOrders.Count >= 1000);
+                i++;
+            } while (responseOrders.Count >= 1000);
 
-                // add the viewmodel
+            // add the viewmodel
+            foreach (var item in items)
+            {
                 ItemVM itemVM = new ItemVM(item);
-                itemVM.Price = Convert.ToDecimal(orders.Where(o => o.SystemID == tradeHub.SystemID).Min(o => o.Price));
+                itemVM.Price = Convert.ToDecimal(orders.Where(o => o.SystemID == tradeHub.SystemID && o.TypeID == item.ID).Min(o => o.Price));
                 viewModels.Add(itemVM);
             }
 
             return viewModels;
+        }
+
+        /// <summary>
+        /// Gets a response for the given request
+        /// </summary>
+        /// <param name="request">Request to make</param>
+        /// <returns>An http response</returns>
+        public async Task<IEnumerable<HttpResponseMessage>> MakeEsiRequest(IEnumerable<string> urls)
+        {
+            var client = new HttpClient();
+
+            // Start requests for the given urls
+            var requests = urls.Select(url => client.GetAsync(url)).ToList();
+
+            // Wait for all the requests to finish
+            await Task.WhenAll(requests);
+
+            // Get the responses
+            var responses = requests.Select(task => task.Result).ToList();
+
+            return responses;
         }
 
         /// <summary>
