@@ -35,13 +35,13 @@ namespace EveNeo.Classes
             return system;
         }
 
-        public static async Task<EntityType> GetEntityType(int typeID)
+        public static async Task<Item> GetEntityType(int typeID)
         {
-            EntityType type = null;
+            Item type = null;
             HttpResponseMessage response = await client.GetAsync($"https://esi.evetech.net/latest/universe/types/{typeID}/?datasource=tranquility&language=en-us");
             if (response.IsSuccessStatusCode)
             {
-                type = await response.Content.ReadAsAsync<EntityType>();
+                type = await response.Content.ReadAsAsync<Item>();
             }
 
             return type;

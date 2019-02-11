@@ -1,5 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EveNeo.Models
 {
@@ -12,12 +14,14 @@ namespace EveNeo.Models
         /// Gets or sets the category ID
         /// </summary>
         [JsonProperty("category_id")]
+        [Key]
         public int ID { get; set; }
 
         /// <summary>
         /// Gets or sets the groups within this category
         /// </summary>
         [JsonProperty("groups")]
+        [NotMapped]
         public List<int> Groups { get; set; } = new List<int>();
 
         /// <summary>

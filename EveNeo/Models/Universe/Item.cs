@@ -1,25 +1,28 @@
 ﻿using EveNeo.Classes;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EveNeo.Models
 {
     /// <summary>
     /// Item type class
     /// </summary>
-    public class EntityType
+    public class Item
     {
         /// <summary>
         /// Gets or sets the type id
         /// </summary>
         [JsonProperty("type_id")]
+        [Key]
         public int ID { get; set; }
 
         /// <summary>
         /// Gets or sets the capacity
         /// </summary>
         [JsonProperty("capacity")]
-        public float Capacity { get; set; }
+        public double Capacity { get; set; }
 
         /// <summary>
         /// Gets or sets the description
@@ -31,12 +34,14 @@ namespace EveNeo.Models
         /// Gets or sets the item's attributes
         /// </summary>
         [JsonProperty("dogma_attributes")]
+        [NotMapped]
         public List<Attribute> DogmaAttributes { get; set; } = new List<Attribute>();
 
         /// <summary>
         /// Gets or sets the item's effects
         /// </summary>
         [JsonProperty("dogma_effects")]
+        [NotMapped]
         public List<Effect> DogmaEffects { get; set; } = new List<Effect>();
 
         /// <summary>
@@ -67,7 +72,7 @@ namespace EveNeo.Models
         /// Gets or sets the mass
         /// </summary>
         [JsonProperty("mass")]
-        public float Mass { get; set; }
+        public double Mass { get; set; }
 
         /// <summary>
         /// Gets or sets the name
@@ -79,7 +84,7 @@ namespace EveNeo.Models
         /// Gets or sets the packaged volume
         /// </summary>
         [JsonProperty("packaged_volume")]
-        public float PackagedVolume { get; set; }
+        public double PackagedVolume { get; set; }
 
         /// <summary>
         /// Gets or sets the portion size
@@ -97,12 +102,12 @@ namespace EveNeo.Models
         /// Gets or sets the radius
         /// </summary>
         [JsonProperty("radius")]
-        public float Radius { get; set; }
+        public double Radius { get; set; }
 
         /// <summary>
         /// Gets or sets the volume
         /// </summary>
         [JsonProperty("volume")]
-        public float Volume { get; set; }
+        public double Volume { get; set; }
     }
 }

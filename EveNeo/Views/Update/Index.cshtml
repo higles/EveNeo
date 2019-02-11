@@ -1,0 +1,16 @@
+﻿@model bool
+@{
+    ViewData["Title"] = "Db Updater";
+}
+
+<h2>Db Updater</h2>
+
+@if (Model)
+{
+    <h3 style="color: green;">Success!</h3>
+}
+else
+{
+    <h3 style="color: red;">@ViewBag.Alert</h3>
+    <h3 style="color: white;">@ViewBag.Message</h3>
+}

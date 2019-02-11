@@ -11,7 +11,7 @@ namespace EveNeo.Models
         /// Gets or sets the order ID
         /// </summary>
         [JsonProperty("order_id")]
-        public int ID { get; set; }
+        public long ID { get; set; }
 
         /// <summary>
         /// Gets or sets the order duration

@@ -1,5 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EveNeo.Models
 {
@@ -12,6 +14,7 @@ namespace EveNeo.Models
         /// Gets or sets the group ID
         /// </summary>
         [JsonProperty("group_id")]
+        [Key]
         public int ID { get; set; }
 
         /// <summary>
@@ -36,6 +39,7 @@ namespace EveNeo.Models
         /// Gets or sets the types within this group
         /// </summary>
         [JsonProperty("types")]
+        [NotMapped]
         public List<int> Types { get; set; } = new List<int>();
     }
 }

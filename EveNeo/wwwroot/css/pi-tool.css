@@ -1,0 +1,99 @@
+﻿/* Wrapping element */
+/* Set some basic padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Hide/rearrange for smaller screens */
+@media screen and (max-width: 767px) {
+    /* Hide captions */
+    .carousel-caption {
+        display: none;
+    }
+}
+
+#pi-overview-table {
+    background-color: transparent;
+}
+
+th.raw-mat-header {
+    border-top-color: transparent !important;
+    border-right-color: transparent !important;
+}
+
+th.raw-mat-header div {
+    position: absolute;
+    width: 40px;
+    white-space: nowrap;
+    transform: rotate(-60deg);
+    padding-left: 35px;
+    margin-left: -10px;
+}
+
+td.mat-box {
+    text-align: center;
+    color: green;
+    vertical-align: middle !important;
+}
+
+td.mat-box > span > img {
+    width: 16px;
+    vertical-align: initial;
+}
+
+th.num {
+    text-align: right;
+}
+
+tr.selected-schematic, tr.required-planet {
+    background-color: #5a666f !important;
+}
+
+th > div.required-mat, tr.required-planet > th.planet-header, tr.selected-schematic > th.schematic-header {
+    color: lightgreen;
+}
+
+td.required-mat {
+    background-color: #16181b;
+}
+
+tr.schematic-header-row th {
+    position: relative;
+    vertical-align: bottom;
+}
+
+tr.schematic-header-row th.sortable span {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    right: 0px;
+    position: absolute;
+    margin: 6px;
+}
+
+tr.schematic-header-row th.sortable[data-sort="no-order"] span {
+    background-image: url("../images/pi_tool/elevator.svg")
+}
+
+tr.schematic-header-row th.sortable[data-sort="in-order"] span {
+    background-image: url("../images/pi_tool/caret-top.svg")
+}
+
+tr.schematic-header-row th.sortable[data-sort="post-order"] span {
+    background-image: url("../images/pi_tool/caret-bottom.svg")
+}
+
+tr.schematic-header-row th.hidden,
+tr.schematic-row th.hidden {
+    display: none;
+}
+
+.table-dark.table-striped tbody tr:nth-of-type(even) {
+    background-color: rgba(33, 37, 41, 0.9);
+}
+.table-dark.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(47, 49, 55, 0.9);
+}
