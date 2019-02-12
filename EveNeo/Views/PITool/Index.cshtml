@@ -2,17 +2,16 @@
 @using EveNeo.ViewModels
 @using EveNeo.Classes
 @{ 
-    //Layout = "";
+    ViewBag.Title = "Planetary Interaction";
 }
 
-<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
 <link rel="stylesheet" href="~/css/pi-tool.css" />
 
-<h2>Index</h2>
+<h2 class="page-title">Planetary Interaction</h2>
 
 <button class="btn btn-dark view-toggle" data-view="build-cost">View Profit</button>
 
-<table class="table table-striped table-bordered table-dark" id="pi-overview-table" style="margin-top: 100px;">
+<table class="table table-striped table-bordered table-dark" id="pi-overview-table">
     <thead>
         <tr>
             <th colspan="9">Planet Type</th>
@@ -20,13 +19,14 @@
             {
                 <th class="raw-mat-header" data-column="@mat.ID"><div>@mat.Name</div></th>
             }
+            <th style="width: 20px; visibility: hidden;"></th>
         </tr>
     </thead>
     <tbody>
         @foreach (PlanetType planet in ViewBag.PlanetTypes)
         {
             <tr class="planet-row">
-                <th role="row" colspan="9" class="planet-header">@planet.Name</th>
+                <th role="row" colspan="9" class="planet-header">@planet.Name.Replace("Planet (", "").Replace(")", "")</th>
                 @foreach (ItemVM mat in ViewBag.RawMats)
                 {
                     <td class="mat-box" data-column="@mat.ID">
@@ -36,6 +36,7 @@
                         }
                     </td>
                 }
+                <td style="width: 20px; visibility: hidden;"></td>
             </tr>
         }
 
@@ -47,6 +48,7 @@
             {
                 <td style="text-align: right">@(mat.Price.ToString("n2"))</td>
             }
+            <td style="width: 20px; visibility: hidden;"></td>
         </tr>
 
         <tr style="background: transparent"><td colspan="@(ViewBag.RawMats.Count + 5)" style="border-left-color: transparent; border-right-color: transparent;"></td></tr>
@@ -62,6 +64,7 @@
             <th colspan="2" class="build-cost" style="text-align: center">ISK / M3</th>
             <th colspan="2" class="build-cost" style="text-align: center">ISK / Hr</th>
             <th rowspan="2" colspan="@(ViewBag.RawMats.Count)"></th>
+            <td colspan="2" style="width: 20px; visibility: hidden;"></td>
         </tr>
         <tr class="schematic-header-row">
             <th class="sortable build-cost" data-column="PerUnitValue" data-sort="no-order">Out<span></span></th>
@@ -136,11 +139,17 @@
                         }
                     </td>
                 }
+                
+                <td style="width: 20px; visibility: hidden;"></td>
             </tr>
         }
     </tbody>
 </table>
 
-<script type="text/javascript" src="~/lib/jquery/dist/jquery.js"></script>
-<script type="text/javascript" src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
 <script type="text/javascript" src="~/js/pi-tool.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.neocom-item').removeClass('active');
+        $('#neocom-pi').addClass('active');
+    });
+</script>

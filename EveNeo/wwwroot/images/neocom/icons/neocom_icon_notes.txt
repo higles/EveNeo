@@ -12,3 +12,12 @@ icon:hover
 		- size: 5px
 		- range: 50%
 		- jitter: 0%
+
+----------------------------------
+icon
+	- inner-shaddow #85ffea, 30% opacity, distance: 8, size: 20, angle: -90
+
+icon:hover
+	- inner-shaddow #e0ffff, 80% opacity, distance: 8, size: 20, angle: -90
+	- outer-glow #e0ffff, 60% opacity, hardness: 1, size: 10
+		

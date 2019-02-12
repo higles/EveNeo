@@ -39,7 +39,7 @@ namespace EveNeo.Controllers
 
             List<SchematicVM> schematics = GetSchematicVMs(itemVMs).ToList();
 
-            ViewBag.PlanetTypes = GetPlanetTypes(items);
+            ViewBag.PlanetTypes = GetPlanetTypes(items).OrderBy(pt => pt.Name).ToList();
             ViewBag.RawMats = itemVMs.Where(i => groups.Any(g => g.CategoryID == (int)Constants.Categories.PlanetaryResources && g.ID == i.GroupID)).OrderBy(m => m.Name).ToList();
             return View(schematics.OrderBy(s => s.Output.Volume).ThenBy(s => s.Name).ToList());
         }

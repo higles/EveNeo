@@ -15,20 +15,23 @@
 
 #pi-overview-table {
     background-color: transparent;
+    font-size: 12px;
 }
 
-th.raw-mat-header {
-    border-top-color: transparent !important;
-    border-right-color: transparent !important;
+thead > tr > th {
+    border-color: transparent !important;
+}
+th {
+    text-shadow: 0 0 5px #000, 0 0 1px;
 }
 
 th.raw-mat-header div {
-    position: absolute;
+    position: relative;
     width: 40px;
     white-space: nowrap;
     transform: rotate(-60deg);
-    padding-left: 35px;
-    margin-left: -10px;
+    padding-left: 10px;
+    padding-top: 10px;
 }
 
 td.mat-box {
