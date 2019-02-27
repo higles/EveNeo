@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using ESI.Models;
 using EveNeo.Classes;
 using EveNeo.Data;
 using EveNeo.Models;
@@ -23,14 +24,16 @@ namespace EveNeo.Controllers
         {
             // Get items with prices
             TradeHub tradeHub = Constants.TradeHubs.First(th => th.SystemID == (int)Constants.Systems.Jita);
-            List<Group> groups = _context.Groups.Where(g => g.CategoryID == (int)Constants.Categories.PlanetaryCommodities || g.CategoryID == (int)Constants.Categories.PlanetaryResources).ToList();
+            List<int> categoryIds = new List<int>() { (int)Constants.Categories.PlanetaryCommodities, (int)Constants.Categories.PlanetaryResources };
+            List<Category> categories = _context.Categories.Where(c => categoryIds.Contains(c.ID)).ToList();
+            List<Group> groups = _context.Groups.Where(g => categoryIds.Contains(g.CategoryID)).ToList();
             List<Item> items = _context.Items.Where(i => groups.Any(g => g.ID == i.GroupID)).ToList();
 
             List<ItemVM> itemVMs = await GetItemMarketData(items, tradeHub);
             foreach (var item in itemVMs)
             {
                 var group = groups.First(g => g.ID == item.GroupID);
-                var category = await _context.Categories.FindAsync(group.CategoryID);
+                var category = categories.First(c => c.ID == group.CategoryID);
 
                 item.GroupName = group.Name;
                 item.CategoryID = category.ID;

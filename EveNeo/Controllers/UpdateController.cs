@@ -1,8 +1,8 @@
-﻿using EveNeo.Data;
-using EveNeo.Models;
+﻿using ESI;
+using ESI.Models;
+using EveNeo.Data;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -61,57 +61,28 @@ namespace EveNeo.Controllers
         /// </summary>
         private async Task<int> UpdateCategories(UpdateContext context)
         {
-            List<int> ids = new List<int>();
-            var request = new HttpRequestMessage(HttpMethod.Get, "https://esi.evetech.net/v1/universe/categories/?datasource=tranquility");
-            var response = await MakeEsiRequest(request);
-
-            // get all category ids
-            if (response.IsSuccessStatusCode)
-            {
-                ids = await response.Content.ReadAsAsync<List<int>>();
-            }
-            else
-            {
-                throw new Exception("Failed to get Category IDs");
-            }
+            var esiCategories = await Universe.GetItemCategoryInformationAsync();
 
             // remove categories not in ESI from Db
-            var categories = context.Categories.Select(c => c.ID).ToList();
-            var deleteList = categories.Where(c => !ids.Any(id => id == c)).ToList();
-
-            foreach(var id in deleteList)
-            {
-                var category = await context.Categories.FindAsync(id);
-                context.Categories.Remove(category);
-            }
+            var deleteList = context.Categories.Where(c => !esiCategories.Any(esi => esi.ID == c.ID));
+            context.Categories.RemoveRange(deleteList);
             await context.SaveChangesAsync();
 
             // update categories from ESI
-            ids = ids.Where(id => !categories.Any(c => c == id)).ToList();
             int i = 0;
-            foreach (var id in ids)
+            foreach (var category in esiCategories)
             {
-                request = new HttpRequestMessage(HttpMethod.Get, "https://esi.evetech.net/v1/universe/categories/" + id + "/?datasource=tranquility&language=en-us");
-                response = await MakeEsiRequest(request);
+                Category dbCategory = await context.Categories.FindAsync(category.ID);
 
-                if (response.IsSuccessStatusCode)
+                // if we find the given id in the database then update else insert
+                if (dbCategory != null)
                 {
-                    Category esiCategory = await response.Content.ReadAsAsync<Category>();
-                    Category dbCategory = await context.Categories.FindAsync(id);
-
-                    if (dbCategory != null)
-                    {
-                        dbCategory.Name = esiCategory.Name;
-                        dbCategory.Published = esiCategory.Published;
-                    }
-                    else
-                    {
-                        await context.Categories.AddAsync(esiCategory);
-                    }
+                    dbCategory.Name = category.Name;
+                    dbCategory.Published = category.Published;
                 }
                 else
                 {
-                    throw new Exception("Failed to get Category '" + id + "'");
+                    await context.Categories.AddAsync(category);
                 }
 
                 i++;
@@ -131,69 +102,30 @@ namespace EveNeo.Controllers
         /// </summary>
         private async Task<int> UpdateGroups(UpdateContext context)
         {
-            List<int> responseIds = new List<int>();
-            List<int> ids = new List<int>();
-            int i = 1;
-            var request = new HttpRequestMessage();
-            var response = new HttpResponseMessage();
-
-            // get all group ids
-            do
-            {
-                request = new HttpRequestMessage(HttpMethod.Get, "https://esi.evetech.net/v1/universe/groups/?datasource=tranquility&page=" + i);
-                response = await MakeEsiRequest(request);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    responseIds = await response.Content.ReadAsAsync<List<int>>();
-                    ids.AddRange(responseIds);
-                }
-                else
-                {
-                    throw new Exception("Failed to get Group IDs for page '" + i + "'");
-                }
-
-                i++;
-            } while (responseIds.Count != 0);
+            // get all groups
+            var esiGroups = await Universe.GetItemGroupInformationAsync();
 
             // remove groups not in ESI from Db
-            var groups = context.Groups.Select(g => g.ID).ToList();
-            var deleteList = groups.Where(g => !ids.Any(id => id == g)).ToList();
-
-            foreach (var id in deleteList)
-            {
-                var group = await context.Groups.FindAsync(id);
-                context.Groups.Remove(group);
-            }
+            var deleteList = context.Groups.Where(g => !esiGroups.Any(esi => esi.ID == g.ID));
+            context.Groups.RemoveRange(deleteList);
             await context.SaveChangesAsync();
 
             // update groups from ESI
-            ids = ids.Where(id => !groups.Any(g => g == id)).ToList();
-            i = 0;
-            foreach (var id in ids)
+            int i = 0;
+            foreach (var group in esiGroups)
             {
-                request = new HttpRequestMessage(HttpMethod.Get, "https://esi.evetech.net/v1/universe/groups/" + id + "/?datasource=tranquility&language=en-us");
-                response = await MakeEsiRequest(request);
+                Group dbGroup = await context.Groups.FindAsync(group.ID);
 
-                if (response.IsSuccessStatusCode)
+                // if we find the given id in the database then update else insert
+                if (dbGroup != null)
                 {
-                    Group esiGroup = await response.Content.ReadAsAsync<Group>();
-                    Group dbGroup = await context.Groups.FindAsync(id);
-
-                    if (dbGroup != null)
-                    {
-                        dbGroup.Name = esiGroup.Name;
-                        dbGroup.Published = esiGroup.Published;
-                        dbGroup.CategoryID = esiGroup.CategoryID;
-                    }
-                    else
-                    {
-                        await context.Groups.AddAsync(esiGroup);
-                    }
+                    dbGroup.Name = group.Name;
+                    dbGroup.Published = group.Published;
+                    dbGroup.CategoryID = group.CategoryID;
                 }
                 else
                 {
-                    throw new Exception("Failed to get Group '" + id + "'");
+                    await context.Groups.AddAsync(group);
                 }
 
                 i++;
@@ -213,79 +145,39 @@ namespace EveNeo.Controllers
         /// </summary>
         private async Task<int> UpdateItems(UpdateContext context)
         {
-            List<int> responseIds = new List<int>();
-            List<int> ids = new List<int>();
-            int i = 1;
-            var request = new HttpRequestMessage();
-            var response = new HttpResponseMessage();
-
-            // get all item ids
-            do
-            {
-                request = new HttpRequestMessage(HttpMethod.Get, "https://esi.evetech.net/v1/universe/types/?datasource=tranquility&page=" + i);
-                response = await MakeEsiRequest(request);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    responseIds = await response.Content.ReadAsAsync<List<int>>();
-                    ids.AddRange(responseIds);
-                }
-                else
-                {
-                    throw new Exception("Failed to get Item IDs for page '" + i + "'");
-                }
-
-                i++;
-            } while (responseIds.Count != 0);
+            // get all items
+            var esiItems = await Universe.GetTypeInformationAsync();
 
             // remove items not in ESI from Db
-            var items = context.Items.Select(it => it.ID).ToList();
-            var deleteList = items.Where(it => !ids.Any(id => id == it)).ToList();
-
-            foreach (var id in deleteList)
-            {
-                var item = await context.Items.FindAsync(id);
-                context.Items.Remove(item);
-            }
+            var deleteList = context.Items.Where(it => !esiItems.Any(esi => esi.ID == it.ID)).ToList();
+            context.Items.RemoveRange(deleteList);
             await context.SaveChangesAsync();
 
             // update items from ESI
-            ids = ids.Where(id => !items.Any(it => it == id)).ToList();
-            i = 0;
-            foreach (var id in ids)
+            int i = 0;
+            foreach (var item in esiItems)
             {
-                request = new HttpRequestMessage(HttpMethod.Get, "https://esi.evetech.net/v3/universe/types/" + id + "/?datasource=tranquility&language=en-us");
-                response = await MakeEsiRequest(request);
+                Item dbItem = await context.Items.FindAsync(item.ID);
 
-                if (response.IsSuccessStatusCode)
+                if (dbItem != null)
                 {
-                    Item esiItem = await response.Content.ReadAsAsync<Item>();
-                    Item dbItem = await context.Items.FindAsync(id);
-
-                    if (dbItem != null)
-                    {
-                        dbItem.Name = esiItem.Name;
-                        dbItem.Published = esiItem.Published;
-                        dbItem.Capacity = esiItem.Capacity;
-                        dbItem.Description = esiItem.Description;
-                        dbItem.GraphicID = esiItem.GraphicID;
-                        dbItem.GraphicID = esiItem.GroupID;
-                        dbItem.IconID = esiItem.IconID;
-                        dbItem.MarketGroupID = esiItem.MarketGroupID;
-                        dbItem.Mass = esiItem.Mass;
-                        dbItem.PackagedVolume = esiItem.PackagedVolume;
-                        dbItem.PortionSize = esiItem.PortionSize;
-                        dbItem.Radius = esiItem.Radius;
-                        dbItem.Volume = esiItem.Volume;
-                    }
-                    else
-                    {
-                        await context.Items.AddAsync(esiItem);
-                    }
+                    dbItem.Name = item.Name;
+                    dbItem.Published = item.Published;
+                    dbItem.Capacity = item.Capacity;
+                    dbItem.Description = item.Description;
+                    dbItem.GraphicID = item.GraphicID;
+                    dbItem.GraphicID = item.GroupID;
+                    dbItem.IconID = item.IconID;
+                    dbItem.MarketGroupID = item.MarketGroupID;
+                    dbItem.Mass = item.Mass;
+                    dbItem.PackagedVolume = item.PackagedVolume;
+                    dbItem.PortionSize = item.PortionSize;
+                    dbItem.Radius = item.Radius;
+                    dbItem.Volume = item.Volume;
                 }
                 else
                 {
-                    throw new Exception("Failed to get Item '" + id + "'");
+                    await context.Items.AddAsync(item);
                 }
 
                 i++;

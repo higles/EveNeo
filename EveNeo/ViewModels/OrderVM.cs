@@ -1,5 +1,5 @@
-﻿using EveNeo.Classes;
-using EveNeo.Models;
+﻿using ESI;
+using ESI.Models;
 using System;
 
 namespace EveNeo.ViewModels
@@ -37,12 +37,12 @@ namespace EveNeo.ViewModels
             this.Duration = order.Duration;
             this.IsBuyOrder = order.IsBuyOrder;
             this.DateIssued = DateTime.Parse(order.Issued);
-            this.Station = APIHandler.GetStation(order.LocationID).Result;
+            this.Station = Universe.GetStationInformationAsync(order.LocationID).Result;
             this.MinVolume = order.MinVolume;
             this.Price = order.Price;
             this.Range = this.Range;
-            this.System = APIHandler.GetSystem(order.SystemID).Result;
-            this.Type = APIHandler.GetEntityType(order.TypeID).Result;
+            this.System = Universe.GetSolarSystemInformationAsync(order.SystemID).Result;
+            this.Type = Universe.GetTypeInformationAsync(order.TypeID).Result;
             this.VolumeRemain = order.VolumeRemain;
             this.VolumeTotal = order.VolumeTotal;
         }

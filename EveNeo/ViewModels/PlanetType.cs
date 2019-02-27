@@ -1,4 +1,4 @@
-﻿using EveNeo.Models;
+﻿using ESI.Models;
 using System.Collections.Generic;
 
 namespace EveNeo.ViewModels

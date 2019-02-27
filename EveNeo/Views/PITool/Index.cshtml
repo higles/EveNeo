@@ -119,17 +119,17 @@
 
             <tr class="schematic-row">
                 <th role="row" class="schematic-header" data-column="Material">@schematic.Name</th>
-                <th data-column="Tier">@schematic.Output.GroupName.Remove(schematic.Output.GroupName.IndexOf(" "))</th>
-                <th class="num" data-column="M3">@schematic.Output.Volume.ToString("n2")</th>
-                <th class="num profit hidden" colspan="2" data-column="PerUnitProfit" style="color: @perUnitColor;">@perUnitProfit.ToString("n2")</th>
-                <th class="num profit hidden" colspan="2" data-column="PerM3Profit" style="color: @perM3Color;">@perM3Profit.ToString("n2")</th>
-                <th class="num profit hidden" colspan="2" data-column="PerHrProfit" style="color: @perHrColor;">@perHrProfit.ToString("n2")</th>
-                <th class="num build-cost" data-column="PerUnitValue" style="color: @perUnitColor;">@perUnitValue.ToString("n2")</th>
-                <th class="num build-cost" data-column="PerUnitCost">@perUnitCost.ToString("n2")</th>
-                <th class="num build-cost" data-column="PerM3Value" style="color: @perM3Color;">@perM3Value.ToString("n2")</th>
-                <th class="num build-cost" data-column="PerM3Cost">@perM3Cost.ToString("n2")</th>
-                <th class="num build-cost" data-column="PerHrValue" style="color: @perHrColor;">@perHrValue.ToString("n2")</th>
-                <th class="num build-cost" data-column="PerHrCost">@perHrCost.ToString("n2")</th>
+                <td data-column="Tier">@schematic.Output.GroupName.Remove(schematic.Output.GroupName.IndexOf(" "))</td>
+                <td class="num" data-column="M3">@schematic.Output.Volume.ToString("n2")</td>
+                <td class="num profit hidden" colspan="2" data-column="PerUnitProfit" style="color: @perUnitColor;">@perUnitProfit.ToString("n2")</td>
+                <td class="num profit hidden" colspan="2" data-column="PerM3Profit" style="color: @perM3Color;">@perM3Profit.ToString("n2")</td>
+                <td class="num profit hidden" colspan="2" data-column="PerHrProfit" style="color: @perHrColor;">@perHrProfit.ToString("n2")</td>
+                <td class="num build-cost" data-column="PerUnitValue" style="color: @perUnitColor;">@perUnitValue.ToString("n2")</td>
+                <td class="num build-cost" data-column="PerUnitCost">@perUnitCost.ToString("n2")</td>
+                <td class="num build-cost" data-column="PerM3Value" style="color: @perM3Color;">@perM3Value.ToString("n2")</td>
+                <td class="num build-cost" data-column="PerM3Cost">@perM3Cost.ToString("n2")</td>
+                <td class="num build-cost" data-column="PerHrValue" style="color: @perHrColor;">@perHrValue.ToString("n2")</td>
+                <td class="num build-cost" data-column="PerHrCost">@perHrCost.ToString("n2")</td>
                 @foreach (ItemVM mat in ViewBag.RawMats)
                 {
                     <td class="mat-box" data-column="@mat.ID">

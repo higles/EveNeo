@@ -1,4 +1,5 @@
-﻿using EveNeo.Models;
+﻿using ESI.Models;
+using EveNeo.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 

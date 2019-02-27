@@ -1,5 +1,4 @@
-﻿using EveNeo.Classes;
-using EveNeo.Models;
+﻿using ESI.Models;
 using EveNeo.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -25,7 +24,7 @@ namespace EveNeo.Controllers
         /// <param name="items">Items to get market data for</param>
         /// <param name="tradeHub">Trade hub to get market data</param>
         /// <returns>Collection of Item view models</returns>
-        public async Task<List<ItemVM>> GetItemMarketData(List<Item> items, TradeHub tradeHub)
+        public async Task<List<ItemVM>> GetItemMarketData(IEnumerable<Item> items, TradeHub tradeHub)
         {
             List<ItemVM> viewModels = new List<ItemVM>();
             //var request = new HttpRequestMessage();

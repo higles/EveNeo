@@ -12,7 +12,7 @@
     <script type="text/javascript" src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
     <script type="text/javascript" src="~/js/site.js"></script>
 </head>
-<body>
+<body onload="UpdateClock(); setInterval('UpdateClock()', 1000 )">
     <video autoplay muted loop id="background">
         <source src="~/videos/StationBackground.mp4" type="video/mp4">
     </video>
