@@ -57,9 +57,9 @@
             <th rowspan="2" class="sortable" data-column="Material" data-sort="no-order">Processed Mat<span></span></th>
             <th rowspan="2" class="sortable" data-column="Tier" data-sort="no-order">Tier<span></span></th>
             <th rowspan="2" class="sortable" data-column="M3" data-sort="no-order">m3<span></span></th>
-            <th rowspan="2" colspan="2" class="sortable hidden profit" data-column="PerUnitProfit" data-sort="no-order">Profit / Unit<span></span></th>
-            <th rowspan="2" colspan="2" class="sortable hidden profit" data-column="PerM3Profit" data-sort="no-order">Profit / m3<span></span></th>
-            <th rowspan="2" colspan="2" class="sortable hidden profit" data-column="PerHrProfit" data-sort="no-order">Profit / Hr<span></span></th>
+            <th rowspan="2" colspan="2" class="sortable hidden profit" data-column="PerUnitProfit" data-sort="no-order" title="OutputUnitPrice - (InputCost / OutputQuantity)">Profit / Unit<span></span></th>
+            <th rowspan="2" colspan="2" class="sortable hidden profit" data-column="PerM3Profit" data-sort="no-order" title="(OutputUnitPrice / OutputVolume) - (InputCost / OutputVolume)">Profit / m3<span></span></th>
+            <th rowspan="2" colspan="2" class="sortable hidden profit" data-column="PerHrProfit" data-sort="no-order" title="((OutputUnitPrice * OutputQuantity) / CycleTimeHrs) - (InputCost / CycleTimeHrs)">Profit / Hr<span></span></th>
             <th colspan="2" class="build-cost" style="text-align: center">ISK / Unit</th>
             <th colspan="2" class="build-cost" style="text-align: center">ISK / M3</th>
             <th colspan="2" class="build-cost" style="text-align: center">ISK / Hr</th>
@@ -104,7 +104,7 @@
             }
 
             var cycleTime = ((decimal)schematic.CycleTime / 60) / 60;
-            var perUnitValue = schematic.Output.Price / schematic.Output.Quantity;
+            var perUnitValue = schematic.Output.Price;
             var perUnitCost = inputCost / schematic.Output.Quantity;
             var perM3Value = schematic.Output.Price / Convert.ToDecimal(schematic.Output.Volume);
             var perM3Cost = inputCost / Convert.ToDecimal(schematic.Output.Volume);

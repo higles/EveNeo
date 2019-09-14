@@ -30,8 +30,8 @@ $('tr.schematic-header-row th.sortable').click(function () {
 
     // sort rows
     rows.sort(function (a, b) {
-        var aVal = $(a).find('th[data-column="' + dataColumn + '"]').text().toUpperCase();
-        var bVal = $(b).find('th[data-column="' + dataColumn + '"]').text().toUpperCase();
+        var aVal = $(a).find('td[data-column="' + dataColumn + '"]').text().toUpperCase();
+        var bVal = $(b).find('td[data-column="' + dataColumn + '"]').text().toUpperCase();
 
         if ($.isNumeric(aVal.replace(/,/g, '')) && $.isNumeric(bVal.replace(/,/g, ''))) {
             aVal = Number(aVal.replace(/,/g, ''));
@@ -67,8 +67,10 @@ $('button.view-toggle').click(function () {
     var viewToHide = $(this).attr('data-view');
 
     $('th.hidden').removeClass('hidden');
+    $('td.hidden').removeClass('hidden');
 
     $('th.' + viewToHide).addClass('hidden');
+    $('td.' + viewToHide).addClass('hidden');
 
     switch (viewToHide) {
         case 'build-cost':

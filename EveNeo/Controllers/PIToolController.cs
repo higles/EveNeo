@@ -61,13 +61,13 @@ namespace EveNeo.Controllers
                 SchematicVM schematicVM = new SchematicVM(schematic);
                 var inputItems = items.Where(i => maps.Any(m => m.SchematicID == schematic.ID && m.IsInput && i.ID == m.TypeID)).ToList();
                 Material outputItem = new Material(items.FirstOrDefault(i => maps.Any(m => m.SchematicID == schematic.ID && !m.IsInput && i.ID == m.TypeID)));
-                outputItem.Quantity = maps.First(m => m.TypeID == outputItem.ID).Quantity;
+                outputItem.Quantity = maps.First(m => m.SchematicID == schematic.ID && !m.IsInput && m.TypeID == outputItem.ID).Quantity;
 
                 schematicVM.Output = outputItem;
                 foreach (var input in inputItems)
                 {
                     var inputMat = new Material(input);
-                    inputMat.Quantity = maps.First(m => m.TypeID == inputMat.ID).Quantity;
+                    inputMat.Quantity = maps.First(m => m.SchematicID == schematic.ID && m.IsInput && m.TypeID == inputMat.ID).Quantity;
                     schematicVM.Inputs.Add(inputMat);
                 }
 
