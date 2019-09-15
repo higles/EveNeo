@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -20,10 +21,13 @@ namespace EveNeo.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index()
+        [Route("[controller]/{systemName}")]
+        public async Task<IActionResult> Index(string systemName)
         {
             // Get items with prices
-            TradeHub tradeHub = Constants.TradeHubs.First(th => th.SystemID == (int)Constants.Systems.Jita);
+            Constants.Systems systemId;
+            Enum.TryParse(systemName, out systemId);
+            TradeHub tradeHub = Constants.TradeHubs.First(th => th.SystemID == (int)systemId);
             List<int> categoryIds = new List<int>() { (int)Constants.Categories.PlanetaryCommodities, (int)Constants.Categories.PlanetaryResources };
             List<Category> categories = _context.Categories.Where(c => categoryIds.Contains(c.ID)).ToList();
             List<Group> groups = _context.Groups.Where(g => categoryIds.Contains(g.CategoryID)).ToList();
@@ -42,6 +46,7 @@ namespace EveNeo.Controllers
 
             List<SchematicVM> schematics = GetSchematicVMs(itemVMs).ToList();
 
+            ViewBag.TradeHub = tradeHub;
             ViewBag.PlanetTypes = GetPlanetTypes(items).OrderBy(pt => pt.Name).ToList();
             ViewBag.RawMats = itemVMs.Where(i => groups.Any(g => g.CategoryID == (int)Constants.Categories.PlanetaryResources && g.ID == i.GroupID)).OrderBy(m => m.Name).ToList();
             return View(schematics.OrderBy(s => s.Output.Volume).ThenBy(s => s.Name).ToList());

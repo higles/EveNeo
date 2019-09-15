@@ -37,7 +37,7 @@ namespace EveNeo.ViewModels
             this.Duration = order.Duration;
             this.IsBuyOrder = order.IsBuyOrder;
             this.DateIssued = DateTime.Parse(order.Issued);
-            this.Station = Universe.GetStationInformationAsync(order.LocationID).Result;
+            this.Station = Universe.GetStationInformationAsync((int)order.LocationID).Result;
             this.MinVolume = order.MinVolume;
             this.Price = order.Price;
             this.Range = this.Range;

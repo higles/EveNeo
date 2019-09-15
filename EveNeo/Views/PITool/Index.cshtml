@@ -3,12 +3,31 @@
 @using EveNeo.Classes
 @{ 
     ViewBag.Title = "Planetary Interaction";
+    var selectedTradeHub = ViewBag.TradeHub as TradeHub;
+
+    var tradeHubs = Enum.GetValues(typeof(Constants.Systems)).Cast<Constants.Systems>()
+        .Where(s => Constants.TradeHubs.Any(th => th.SystemID == (int)s))
+        .ToDictionary(s => s.ToString(), s => (int)s);
 }
 
 <link rel="stylesheet" href="~/css/pi-tool.css" />
 
 <h2 class="page-title">Planetary Interaction</h2>
 
+<select id="TradeHub" class="form-control bg-dark" style="display: inline-block; width: 10em; color: #fff; vertical-align: middle;">
+    @foreach (var tradeHub in tradeHubs)
+    {
+        if (tradeHub.Value == selectedTradeHub.SystemID)
+        {
+            <option value="@tradeHub.Value" selected>@tradeHub.Key</option>
+        }
+        else
+        {
+            <option value="@tradeHub.Value">@tradeHub.Key</option>
+        }
+    }
+</select>
+<button id="market-refresh" class="btn btn-dark"><i></i></button>
 <button class="btn btn-dark view-toggle" data-view="build-cost">View Profit</button>
 
 <table class="table table-striped table-bordered table-dark" id="pi-overview-table">
@@ -46,7 +65,7 @@
             <th colspan="9">ISK / Unit</th>
             @foreach (ItemVM mat in ViewBag.RawMats)
             {
-                <td style="text-align: right">@(mat.Price.ToString("n2"))</td>
+                <td style="text-align: right">@(mat.Price == 0 ? "-.--" : mat.Price.ToString("n2"))</td>
             }
             <td style="width: 20px; visibility: hidden;"></td>
         </tr>
@@ -103,6 +122,11 @@
                 inputVolume += (input.Volume * input.Quantity);
             }
 
+            if (schematic.Inputs.Any(i => i.Price == 0))
+            {
+                inputCost = 0;
+            }
+
             var cycleTime = ((decimal)schematic.CycleTime / 60) / 60;
             var perUnitValue = schematic.Output.Price;
             var perUnitCost = inputCost / schematic.Output.Quantity;
@@ -121,15 +145,15 @@
                 <th role="row" class="schematic-header" data-column="Material">@schematic.Name</th>
                 <td data-column="Tier">@schematic.Output.GroupName.Remove(schematic.Output.GroupName.IndexOf(" "))</td>
                 <td class="num" data-column="M3">@schematic.Output.Volume.ToString("n2")</td>
-                <td class="num profit hidden" colspan="2" data-column="PerUnitProfit" style="color: @perUnitColor;">@perUnitProfit.ToString("n2")</td>
-                <td class="num profit hidden" colspan="2" data-column="PerM3Profit" style="color: @perM3Color;">@perM3Profit.ToString("n2")</td>
-                <td class="num profit hidden" colspan="2" data-column="PerHrProfit" style="color: @perHrColor;">@perHrProfit.ToString("n2")</td>
+                <td class="num profit hidden" colspan="2" data-column="PerUnitProfit" style="color: @perUnitColor;">@(inputCost == 0 ? "-.--" : perUnitProfit.ToString("n2"))</td>
+                <td class="num profit hidden" colspan="2" data-column="PerM3Profit" style="color: @perM3Color;">@(inputCost == 0 ? "-.--" : perM3Profit.ToString("n2"))</td>
+                <td class="num profit hidden" colspan="2" data-column="PerHrProfit" style="color: @perHrColor;">@(inputCost == 0 ? "-.--" : perHrProfit.ToString("n2"))</td>
                 <td class="num build-cost" data-column="PerUnitValue" style="color: @perUnitColor;">@perUnitValue.ToString("n2")</td>
-                <td class="num build-cost" data-column="PerUnitCost">@perUnitCost.ToString("n2")</td>
+                <td class="num build-cost" data-column="PerUnitCost">@(inputCost == 0 ? "-.--" : perUnitCost.ToString("n2"))</td>
                 <td class="num build-cost" data-column="PerM3Value" style="color: @perM3Color;">@perM3Value.ToString("n2")</td>
-                <td class="num build-cost" data-column="PerM3Cost">@perM3Cost.ToString("n2")</td>
+                <td class="num build-cost" data-column="PerM3Cost">@(inputCost == 0 ? "-.--" : perM3Cost.ToString("n2"))</td>
                 <td class="num build-cost" data-column="PerHrValue" style="color: @perHrColor;">@perHrValue.ToString("n2")</td>
-                <td class="num build-cost" data-column="PerHrCost">@perHrCost.ToString("n2")</td>
+                <td class="num build-cost" data-column="PerHrCost">@(inputCost == 0 ? "-.--" : perHrCost.ToString("n2"))</td>
                 @foreach (ItemVM mat in ViewBag.RawMats)
                 {
                     <td class="mat-box" data-column="@mat.ID">

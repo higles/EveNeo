@@ -13,6 +13,20 @@
     }
 }
 
+#TradeHub > option:hover {
+    background: transparent;
+}
+
+#market-refresh i {
+    display: block;
+    height: 15px;
+    width: 15px;
+    margin: 4px 0px;
+    background-image: url("../images/pi_tool/reload.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
 #pi-overview-table {
     background-color: transparent;
     font-size: 12px;

@@ -84,6 +84,17 @@ $('button.view-toggle').click(function () {
     }
 });
 
+$('#TradeHub').change(function () {
+    var systemId = this.value;
+    var systemName = $(this).find('option[value="' + systemId + '"]').text();
+    location.href = systemName;
+});
+
+$('#market-refresh').click(function () {
+    console.log(location);
+    location.reload();
+});
+
 function SortInOrder(a, b) {
     if (a < b) {
         return -1;

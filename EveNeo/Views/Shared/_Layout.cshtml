@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using EveNeo.Classes
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -24,7 +26,7 @@
             <li id="neocom-skillqueue" class="neocom-item"><span class="icon"></span><span class="overlay"></span></li>
             <li id="neocom-market" class="neocom-item hidden"><a href=""><span class="icon"></span></a></li>
             <li id="neocom-agency" class="neocom-item hidden"><a href=""><span class="icon"></span></a></li>
-            <li id="neocom-pi" class="neocom-item"><a href="@Url.Action("Index", "PITool")" title="Planetary Interaction"><span class="icon"></span></a></li>
+            <li id="neocom-pi" class="neocom-item"><a href="@Url.Action("Index", "PITool", new { systemName = Constants.Systems.Jita.ToString() })" title="Planetary Interaction"><span class="icon"></span></a></li>
         </ul>
         <div id="gametime">
             <span>17:00</span>

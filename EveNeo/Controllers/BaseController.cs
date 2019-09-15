@@ -65,7 +65,8 @@ namespace EveNeo.Controllers
             foreach (var item in items)
             {
                 ItemVM itemVM = new ItemVM(item);
-                itemVM.Price = Convert.ToDecimal(orders.Where(o => o.SystemID == tradeHub.SystemID && o.TypeID == item.ID).Min(o => o.Price));
+                var itemOrders = orders.Where(o => o.SystemID == tradeHub.SystemID && o.TypeID == item.ID).ToList();
+                itemVM.Price = itemOrders.Count > 0 ? Convert.ToDecimal(itemOrders.Min(o => o.Price)) : 0;
                 viewModels.Add(itemVM);
             }
 
