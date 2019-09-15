@@ -38,9 +38,10 @@ html, body {
 
 /*** NeoCom ***/
 #neocom {
-    position: relative;
-    display: table-cell;
-    width: 2em;
+    position: fixed;
+    display: inline-block;
+    height: 100%;
+    vertical-align: top;
     background-image: linear-gradient(to right, #38564933 40%, #38564977 100%);
 }
 
@@ -48,12 +49,21 @@ html, body {
     position: relative;
     display: block;
     height: 3em;
-    padding: 0.25em 0em;
     transition: all .3s ease-in-out;
 }
 
+    .neocom-item.active {
+        background: rgba(160, 234, 228, 0.2);
+        box-shadow: inset 0 0 5px rgba(160,234,228,0.3);
+    }
+
     .neocom-item:hover {
         cursor: pointer;
+    }
+
+    .neocom-item > a {
+        display: block;
+        padding: 0.25em 0em;
     }
 
     .neocom-item span.icon {
@@ -74,7 +84,7 @@ html, body {
     }
 
     .neocom-item:hover span.overlay {
-        background: #fff2;
+        background: rgba(255,255,255,0.13);
     }
 
 #neocom-login {
@@ -97,19 +107,19 @@ html, body {
     #neocom-character span.icon {
         width: 100%;
         height: 100%;
-        background: url("../images/neocom/temp_portrait.jpg");
+        background: url("../images/neocom/character-icon.png");
         background-size: contain;
     }
 
 #neocom-skillqueue {
     height: 0.5em;
-    border: 1px solid #fff3;
+    border: 1px solid rgba(255,255,255,0.2);
     box-sizing: border-box;
-    background: #0009;
+    background: rgba(0,0,0,0.6);
 }
 
     #neocom-skillqueue:hover {
-        border-color: #fff5;
+        border-color: rgba(255,255,255,0.33);
     }
 
 #neocom-market span.icon {
@@ -132,6 +142,16 @@ html, body {
     background-size: contain;
 }
 
+#neocom-pi span.icon {
+    background: url("../images/neocom/icons/neocom-pi.png");
+    background-size: contain;
+}
+
+#neocom-pi:hover span.icon {
+    background: url("../images/neocom/icons/neocom-pi-hover.png");
+    background-size: contain;
+}
+
 #gametime {
     position: absolute;
     bottom: 0;
@@ -141,12 +161,12 @@ html, body {
     font-size: 11px;
     text-align: center;
     color: #ddd;
-    background: #000a;
+    background: rgba(0,0,0,0.66);
     transition: all .3s ease-in-out;
 }
 
     #gametime:hover {
-        background: #333a;
+        background: rgba(51,51,51,0.66);
         cursor: pointer;
     }
 
@@ -156,6 +176,35 @@ html, body {
 
 /*** Content ***/
 #content {
-    display: table-cell;
-    width: calc(100% - 2em);
+    position: relative;
+    display: block;
+    margin-left: 48px;
+    vertical-align: top;
+    width: calc(100% - 48px);
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: auto;
+}
+
+#content::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+    background-color: rgba(16, 24, 21, 0.50)
+}
+#content::-webkit-scrollbar-track {
+    border: 1px solid rgba(16, 24, 21, 0.50);
+    background-color: rgba(16, 24, 21, 0.50);
+}
+
+#content::-webkit-scrollbar-thumb {
+    background-color: rgba(66, 101, 86, 0.50);
+}
+
+.page-title {
+    color: #fff;
+}
+
+/*** Status styles ***/
+.hidden {
+    display: none;
 }

@@ -1,4 +1,8 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
-
-// Write your JavaScript code.
+﻿function UpdateClock() {
+    var today = new Date();
+    var h = today.getUTCHours();
+    var m = today.getUTCMinutes();
+    h = h < 10 ? "0" + h : h;
+    m = m < 10 ? "0" + m : m;
+    $('#gametime span').text(h + ":" + m);
+}

@@ -1,43 +1,43 @@
-﻿<!DOCTYPE html>
+﻿@using EveNeo.Classes
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - EveNeo</title>
 
-    <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+
+    <script type="text/javascript" src="~/lib/jquery/dist/jquery.js"></script>
+    <script type="text/javascript" src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script type="text/javascript" src="~/js/site.js"></script>
 </head>
-<body>
+<body onload="UpdateClock(); setInterval('UpdateClock()', 1000 )">
     <video autoplay muted loop id="background">
         <source src="~/videos/StationBackground.mp4" type="video/mp4">
     </video>
 
-    <div id="content-grid">
-        <div id="content-row">
-            <nav id="neocom">
-                <ul>
-                    <li id="neocom-login" class="neocom-item"><span class="icon"></span><span class="overlay"></span></li>
-                    <li id="neocom-character" class="neocom-item"><span class="icon"></span><span class="overlay"></span></li>
-                    <li id="neocom-skillqueue" class="neocom-item"><span class="icon"></span><span class="overlay"></span></li>
-                    <li id="neocom-market" class="neocom-item"><span class="icon"></span></li>
-                    <li id="neocom-agency" class="neocom-item"><span class="icon"></span></li>
-                </ul>
-                <div id="gametime">
-                    <span>17:00</span>
-                </div>
-            </nav>
-
-            <div id="content" class="container body-content">
-                @RenderBody()
-                <hr />
-                <footer>
-                    <p>&copy; 2018 - EveNeo</p>
-                </footer>
-            </div>
+    <nav id="neocom" class="">
+        <ul>
+            <li id="neocom-login" class="neocom-item"><span class="icon"></span><span class="overlay"></span></li>
+            <li id="neocom-character" class="neocom-item"><span class="icon"></span><span class="overlay"></span></li>
+            <li id="neocom-skillqueue" class="neocom-item"><span class="icon"></span><span class="overlay"></span></li>
+            <li id="neocom-market" class="neocom-item hidden"><a href=""><span class="icon"></span></a></li>
+            <li id="neocom-agency" class="neocom-item hidden"><a href=""><span class="icon"></span></a></li>
+            <li id="neocom-pi" class="neocom-item"><a href="@Url.Action("Index", "PITool", new { systemName = Constants.Systems.Jita.ToString() })" title="Planetary Interaction"><span class="icon"></span></a></li>
+        </ul>
+        <div id="gametime">
+            <span>17:00</span>
         </div>
+    </nav>
+    <div id="content" class="body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; 2018 - EveNeo</p>
+        </footer>
     </div>
-
-    @RenderSection("Scripts", required: false)
 </body>
 </html>
