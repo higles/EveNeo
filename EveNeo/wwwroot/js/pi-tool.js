@@ -61,6 +61,9 @@ $('tr.schematic-header-row th.sortable').click(function () {
             $(this).attr('data-sort', 'post-order');
             break;
     }
+
+    sessionStorage.PISortCol = $(this).attr('data-column');
+    sessionStorage.PISortOrder = $(this).attr('data-sort');
 });
 
 $('button.view-toggle').click(function () {
@@ -82,23 +85,18 @@ $('button.view-toggle').click(function () {
             $(this).text('View Profit');
             break;
     }
+
+    sessionStorage.PIView = $(this).attr('data-view');
 });
 
 $('#TradeHub').change(function () {
     var systemId = this.value;
     var systemName = $(this).find('option[value="' + systemId + '"]').text();
-
-    var view = $('button.view-toggle').attr('data-view');
-    var sortby = $('th.sortable:not(.no-order)');
-    sessionStorage.PIView = view;
     
     location.href = systemName;
 });
 
 $('#market-refresh').click(function () {
-    var view = $('button.view-toggle').attr('data-view');
-    sessionStorage.PIView = view;
-
     location.reload();
 });
 

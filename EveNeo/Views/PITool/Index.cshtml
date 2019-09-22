@@ -184,5 +184,17 @@
             $('button.view-toggle').attr('data-view', 'profit');
         }
         $('button.view-toggle').click();
+
+        // Set sort
+        if (sessionStorage.PISortCol != null) {
+            var sortCol = $('th.sortable[data-column="' + sessionStorage.PISortCol + '"]');
+            if (sessionStorage.PISortOrder === 'in-order') {
+                sortCol.attr('data-sort', 'post-order');
+            }
+            else {
+                sortCol.attr('data-sort', 'in-order');
+            }
+            sortCol.click();
+        }
     });
 </script>
