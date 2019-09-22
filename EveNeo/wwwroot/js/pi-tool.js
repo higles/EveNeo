@@ -30,8 +30,8 @@ $('tr.schematic-header-row th.sortable').click(function () {
 
     // sort rows
     rows.sort(function (a, b) {
-        var aVal = $(a).find('td[data-column="' + dataColumn + '"]').text().toUpperCase();
-        var bVal = $(b).find('td[data-column="' + dataColumn + '"]').text().toUpperCase();
+        var aVal = $(a).find('td[data-column="' + dataColumn + '"],th[data-column="' + dataColumn + '"]').text().toUpperCase();
+        var bVal = $(b).find('td[data-column="' + dataColumn + '"],th[data-column="' + dataColumn + '"]').text().toUpperCase();
 
         if ($.isNumeric(aVal.replace(/,/g, '')) && $.isNumeric(bVal.replace(/,/g, ''))) {
             aVal = Number(aVal.replace(/,/g, ''));
