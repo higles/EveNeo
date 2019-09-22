@@ -9,6 +9,7 @@ using EveNeo.Data;
 using EveNeo.Models;
 using EveNeo.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace EveNeo.Controllers
 {
@@ -32,8 +33,18 @@ namespace EveNeo.Controllers
             List<Category> categories = _context.Categories.Where(c => categoryIds.Contains(c.ID)).ToList();
             List<Group> groups = _context.Groups.Where(g => categoryIds.Contains(g.CategoryID)).ToList();
             List<Item> items = _context.Items.Where(i => groups.Any(g => g.ID == i.GroupID)).ToList();
+            List<ItemVM> itemVMs = new List<ItemVM>();
 
-            List<ItemVM> itemVMs = await GetItemMarketData(items, tradeHub);
+            try
+            {
+                itemVMs = await GetItemMarketData(items, tradeHub);
+            }
+            catch (Exception ex)
+            {
+                //TODO: show custom error screen
+                throw ex;
+            }
+
             foreach (var item in itemVMs)
             {
                 var group = groups.First(g => g.ID == item.GroupID);
@@ -49,6 +60,7 @@ namespace EveNeo.Controllers
             ViewBag.TradeHub = tradeHub;
             ViewBag.PlanetTypes = GetPlanetTypes(items).OrderBy(pt => pt.Name).ToList();
             ViewBag.RawMats = itemVMs.Where(i => groups.Any(g => g.CategoryID == (int)Constants.Categories.PlanetaryResources && g.ID == i.GroupID)).OrderBy(m => m.Name).ToList();
+
             return View(schematics.OrderBy(s => s.Output.Volume).ThenBy(s => s.Name).ToList());
         }
 

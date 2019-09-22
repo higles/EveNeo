@@ -28,7 +28,7 @@
     }
 </select>
 <button id="market-refresh" class="btn btn-dark"><i></i></button>
-<button class="btn btn-dark view-toggle" data-view="build-cost">View Profit</button>
+<button class="btn btn-dark view-toggle" data-view=""></button>
 
 <table class="table table-striped table-bordered table-dark" id="pi-overview-table">
     <thead>
@@ -73,17 +73,17 @@
         <tr style="background: transparent"><td colspan="@(ViewBag.RawMats.Count + 5)" style="border-left-color: transparent; border-right-color: transparent;"></td></tr>
 
         <tr class="schematic-header-row">
-            <th rowspan="2" class="sortable" data-column="Material" data-sort="no-order">Processed Mat<span></span></th>
-            <th rowspan="2" class="sortable" data-column="Tier" data-sort="no-order">Tier<span></span></th>
-            <th rowspan="2" class="sortable" data-column="M3" data-sort="no-order">m3<span></span></th>
+            <th rowspan="2" class="sortable static" data-column="Material" data-sort="no-order">Processed Mat<span></span></th>
+            <th rowspan="2" class="sortable static" data-column="Tier" data-sort="no-order">Tier<span></span></th>
+            <th rowspan="2" class="sortable static" data-column="M3" data-sort="no-order">m3<span></span></th>
             <th rowspan="2" colspan="2" class="sortable hidden profit" data-column="PerUnitProfit" data-sort="no-order" title="OutputUnitPrice - (InputCost / OutputQuantity)">Profit / Unit<span></span></th>
             <th rowspan="2" colspan="2" class="sortable hidden profit" data-column="PerM3Profit" data-sort="no-order" title="(OutputUnitPrice / OutputVolume) - (InputCost / OutputVolume)">Profit / m3<span></span></th>
             <th rowspan="2" colspan="2" class="sortable hidden profit" data-column="PerHrProfit" data-sort="no-order" title="((OutputUnitPrice * OutputQuantity) / CycleTimeHrs) - (InputCost / CycleTimeHrs)">Profit / Hr<span></span></th>
             <th colspan="2" class="build-cost" style="text-align: center">ISK / Unit</th>
             <th colspan="2" class="build-cost" style="text-align: center">ISK / M3</th>
             <th colspan="2" class="build-cost" style="text-align: center">ISK / Hr</th>
-            <th rowspan="2" colspan="@(ViewBag.RawMats.Count)"></th>
-            <td colspan="2" style="width: 20px; visibility: hidden;"></td>
+            <th rowspan="2" colspan="@(ViewBag.RawMats.Count)" class="static"></th>
+            <td colspan="2" class="static" style="width: 20px; visibility: hidden;"></td>
         </tr>
         <tr class="schematic-header-row">
             <th class="sortable build-cost" data-column="PerUnitValue" data-sort="no-order">Out<span></span></th>
@@ -142,9 +142,9 @@
             var perHrColor = perHrValue > perHrCost ? "white" : "red";
 
             <tr class="schematic-row">
-                <th role="row" class="schematic-header" data-column="Material">@schematic.Name</th>
-                <td data-column="Tier">@schematic.Output.GroupName.Remove(schematic.Output.GroupName.IndexOf(" "))</td>
-                <td class="num" data-column="M3">@schematic.Output.Volume.ToString("n2")</td>
+                <th role="row" class="schematic-header static" data-column="Material">@schematic.Name</th>
+                <td class="static" data-column="Tier">@schematic.Output.GroupName.Remove(schematic.Output.GroupName.IndexOf(" "))</td>
+                <td class="num static" data-column="M3">@schematic.Output.Volume.ToString("n2")</td>
                 <td class="num profit hidden" colspan="2" data-column="PerUnitProfit" style="color: @perUnitColor;">@(inputCost == 0 ? "-.--" : perUnitProfit.ToString("n2"))</td>
                 <td class="num profit hidden" colspan="2" data-column="PerM3Profit" style="color: @perM3Color;">@(inputCost == 0 ? "-.--" : perM3Profit.ToString("n2"))</td>
                 <td class="num profit hidden" colspan="2" data-column="PerHrProfit" style="color: @perHrColor;">@(inputCost == 0 ? "-.--" : perHrProfit.ToString("n2"))</td>
@@ -156,7 +156,7 @@
                 <td class="num build-cost" data-column="PerHrCost">@(inputCost == 0 ? "-.--" : perHrCost.ToString("n2"))</td>
                 @foreach (ItemVM mat in ViewBag.RawMats)
                 {
-                    <td class="mat-box" data-column="@mat.ID">
+                    <td class="mat-box static" data-column="@mat.ID">
                         @if (rawMats.FirstOrDefault(m => m.ID == mat.ID) != null)
                         {
                             <span><img src="~/images/pi_tool/check.svg" /></span>
@@ -175,5 +175,26 @@
     $(document).ready(function () {
         $('.neocom-item').removeClass('active');
         $('#neocom-pi').addClass('active');
+
+        // Set view
+        if (sessionStorage.PIView === 'profit') {
+            $('button.view-toggle').attr('data-view', 'build-cost');
+        }
+        else {
+            $('button.view-toggle').attr('data-view', 'profit');
+        }
+        $('button.view-toggle').click();
+
+        // Set sort
+        if (sessionStorage.PISortCol != null) {
+            var sortCol = $('th.sortable[data-column="' + sessionStorage.PISortCol + '"]');
+            if (sessionStorage.PISortOrder === 'in-order') {
+                sortCol.attr('data-sort', 'post-order');
+            }
+            else {
+                sortCol.attr('data-sort', 'in-order');
+            }
+            sortCol.click();
+        }
     });
 </script>

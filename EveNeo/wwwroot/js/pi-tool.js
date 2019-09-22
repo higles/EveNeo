@@ -30,8 +30,8 @@ $('tr.schematic-header-row th.sortable').click(function () {
 
     // sort rows
     rows.sort(function (a, b) {
-        var aVal = $(a).find('td[data-column="' + dataColumn + '"]').text().toUpperCase();
-        var bVal = $(b).find('td[data-column="' + dataColumn + '"]').text().toUpperCase();
+        var aVal = $(a).find('td[data-column="' + dataColumn + '"],th[data-column="' + dataColumn + '"]').text().toUpperCase();
+        var bVal = $(b).find('td[data-column="' + dataColumn + '"],th[data-column="' + dataColumn + '"]').text().toUpperCase();
 
         if ($.isNumeric(aVal.replace(/,/g, '')) && $.isNumeric(bVal.replace(/,/g, ''))) {
             aVal = Number(aVal.replace(/,/g, ''));
@@ -61,6 +61,9 @@ $('tr.schematic-header-row th.sortable').click(function () {
             $(this).attr('data-sort', 'post-order');
             break;
     }
+
+    sessionStorage.PISortCol = $(this).attr('data-column');
+    sessionStorage.PISortOrder = $(this).attr('data-sort');
 });
 
 $('button.view-toggle').click(function () {
@@ -82,16 +85,18 @@ $('button.view-toggle').click(function () {
             $(this).text('View Profit');
             break;
     }
+
+    sessionStorage.PIView = $(this).attr('data-view');
 });
 
 $('#TradeHub').change(function () {
     var systemId = this.value;
     var systemName = $(this).find('option[value="' + systemId + '"]').text();
+    
     location.href = systemName;
 });
 
 $('#market-refresh').click(function () {
-    console.log(location);
     location.reload();
 });
 
